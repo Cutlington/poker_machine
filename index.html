@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Sara's Poker Machine</title>
+<title>Poker Machine</title>
 <style>
     body {
         background: #111;
@@ -55,20 +55,12 @@
         font-size: 24px;
         min-height: 30px;
     }
-
-    #balance {
-        font-size: 26px;
-        margin-bottom: 20px;
-        color: #00eaff;
-    }
 </style>
 </head>
 <body>
 
-<h1>Sara Totally Reel Poker Machine</h1>
-<p>Match all 5 symbols to win. ⭐⭐⭐⭐⭐ = JACKPOT PRIZE of 1 Booty Licking From ME</p>
-
-<div id="balance">Balance: $100</div>
+<h1>Sara Totally Real Poker Machine</h1>
+<p>Match all 5 symbols to win. ⭐⭐⭐⭐⭐ triggers the JACKPOT PRIZE of a Booty Licking.</p>
 
 <div class="slot-container">
     <div class="slot" id="slot1">?</div>
@@ -78,33 +70,16 @@
     <div class="slot" id="slot5">?</div>
 </div>
 
-<button onclick="spin()">SPIN ($5)</button>
+<button onclick="spin()">SPIN</button>
 <div id="message"></div>
 
 <script>
-    const symbols = ["🍒", "🍋", "🔔", "💎", "⭐"];
-
-    let balance = 100;
-    const spinCost = 5;
-    const winPayout = 50;
-    const jackpotPayout = 500;
-
-    function updateBalance() {
-        document.getElementById("balance").textContent = "Balance: $" + balance;
-    }
+    const symbols = ["🍒", "🍋", "🔔", "💎", "⭐"]; // ⭐ = jackpot symbol
 
     function spin() {
-        if (balance < spinCost) {
-            document.getElementById("message").textContent = "You're out of money!";
-            document.getElementById("message").style.color = "#ff4444";
-            return;
-        }
-
-        balance -= spinCost;
-        updateBalance();
-
         const results = [];
 
+        // Generate 5 random symbols
         for (let i = 1; i <= 5; i++) {
             const symbol = symbols[Math.floor(Math.random() * symbols.length)];
             results.push(symbol);
@@ -112,24 +87,22 @@
         }
 
         const msg = document.getElementById("message");
+
+        // Check if all 5 match
         const allMatch = results.every(s => s === results[0]);
 
         if (allMatch) {
             if (results[0] === "⭐") {
-                msg.textContent = "JACKPOT! ⭐⭐⭐⭐⭐ +$" + jackpotPayout;
+                msg.textContent = "JACKPOT! ⭐⭐⭐⭐⭐";
                 msg.style.color = "#ffd700";
-                balance += jackpotPayout;
             } else {
-                msg.textContent = "WIN! Five " + results[0] + " +$" + winPayout;
+                msg.textContent = "WIN! Five " + results[0] + " in a row!";
                 msg.style.color = "#00ff99";
-                balance += winPayout;
             }
         } else {
             msg.textContent = "No win, try again";
             msg.style.color = "#fff";
         }
-
-        updateBalance();
     }
 </script>
 
