@@ -74,29 +74,94 @@
 <div id="message"></div>
 
 <script>
-    const symbols = ["🍒", "🍋", "🔔", "💎", "⭐"]; // ⭐ = jackpot symbol
+    const symbols = ["🍒", "🍋", "🔔", "💎", "⭐"];
+
+    // How often ANY win happens (0.0 = never, 1.0 = always)
+    let winChance = 0.25; // 25% of spins will be wins
+
+    // Win distribution (must total 1.0)
+    let chance2 = 0.60;        // 60% of wins are 2-symbol wins
+    let chance3 = 0.25;        // 25% of wins are 3-symbol wins
+    let chance4 = 0.10;        // 10% of wins are 4-symbol wins
+    let chance5 = 0.04;        // 4% of wins are 5-symbol wins (non-jackpot)
+    let jackpotChance = 0.01;  // 1% of wins are jackpot ⭐⭐⭐⭐⭐
+
+    function chooseWinLength() {
+        let r = Math.random();
+
+        // Jackpot overrides everything
+        if (r < jackpotChance) return 5.1; // special code for jackpot
+
+        r -= jackpotChance;
+        if (r < chance2) return 2;
+        r -= chance2;
+        if (r < chance3) return 3;
+        r -= chance3;
+        if (r < chance4) return 4;
+        r -= chance4;
+        if (r < chance5) return 5;
+
+        return 2; // fallback
+    }
 
     function spin() {
-        const results = [];
+        const msg = document.getElementById("message");
+        let results = [];
 
-        // Generate 5 random symbols
-        for (let i = 1; i <= 5; i++) {
-            const symbol = symbols[Math.floor(Math.random() * symbols.length)];
-            results.push(symbol);
-            document.getElementById("slot" + i).textContent = symbol;
+        // Decide if this spin is a winning spin
+        const isWinningSpin = Math.random() < winChance;
+
+        if (isWinningSpin) {
+            // Pick a symbol to win with
+            const winSymbol = symbols[Math.floor(Math.random() * symbols.length)];
+
+            // Determine win length (2–5 or jackpot)
+            let winLength = chooseWinLength();
+
+            if (winLength === 5.1) {
+                // Jackpot: force ⭐⭐⭐⭐⭐
+                results = ["⭐","⭐","⭐","⭐","⭐"];
+            } else {
+                // Build normal win
+                for (let i = 0; i < 5; i++) {
+                    if (i < winLength) {
+                        results.push(winSymbol);
+                    } else {
+                        // Fill remaining reels with random symbols (not the win symbol)
+                        let s;
+                        do {
+                            s = symbols[Math.floor(Math.random() * symbols.length)];
+                        } while (s === winSymbol);
+                        results.push(s);
+                    }
+                }
+            }
+        } else {
+            // Normal random spin (no forced win)
+            for (let i = 0; i < 5; i++) {
+                results.push(symbols[Math.floor(Math.random() * symbols.length)]);
+            }
         }
 
-        const msg = document.getElementById("message");
+        // Display symbols
+        for (let i = 0; i < 5; i++) {
+            document.getElementById("slot" + (i + 1)).textContent = results[i];
+        }
 
-        // Check if all 5 match
-        const allMatch = results.every(s => s === results[0]);
+        // Count left-to-right matches
+        let matchCount = 1;
+        for (let i = 1; i < results.length; i++) {
+            if (results[i] === results[0]) matchCount++;
+            else break;
+        }
 
-        if (allMatch) {
-            if (results[0] === "⭐") {
+        // Determine win message
+        if (matchCount >= 2) {
+            if (matchCount === 5 && results[0] === "⭐") {
                 msg.textContent = "JACKPOT! ⭐⭐⭐⭐⭐";
                 msg.style.color = "#ffd700";
             } else {
-                msg.textContent = "WIN! Five " + results[0] + " in a row!";
+                msg.textContent = `WIN! ${matchCount}× ${results[0]}!`;
                 msg.style.color = "#00ff99";
             }
         } else {
@@ -105,6 +170,38 @@
         }
     }
 </script>
+
+<!-- ⭐⭐⭐ PAYOUT TABLE ADDED BELOW ⭐⭐⭐ -->
+
+<div style="margin-top:40px; color:#ccc; font-size:18px;">
+    <h2 style="color:white; margin-bottom:10px;">Payout Table</h2>
+    <table style="margin:0 auto; border-collapse:collapse; font-size:18px;">
+        <tr>
+            <th style="border:1px solid #555; padding:8px;">Match</th>
+            <th style="border:1px solid #555; padding:8px;">Prize</th>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">2 Matching Symbols</td>
+            <td style="border:1px solid #555; padding:8px;">Small Win</td>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">3 Matching Symbols</td>
+            <td style="border:1px solid #555; padding:8px;">Medium Win</td>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">4 Matching Symbols</td>
+            <td style="border:1px solid #555; padding:8px;">Big Win</td>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">5 Matching Symbols</td>
+            <td style="border:1px solid #555; padding:8px;">Huge Win</td>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">⭐⭐⭐⭐⭐</td>
+            <td style="border:1px solid #555; padding:8px; color:#ffd700;">JACKPOT</td>
+        </tr>
+    </table>
+</div>
 
 </body>
 </html>
