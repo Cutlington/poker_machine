@@ -12,13 +12,9 @@
         text-align: center;
         padding: 40px;
     }
-    h1 {
-        margin-bottom: 10px;
-    }
-    p {
-        margin-top: 0;
-        color: #ccc;
-    }
+    h1 { margin-bottom: 10px; }
+    p { margin-top: 0; color: #ccc; }
+
     .slot-container {
         display: flex;
         justify-content: center;
@@ -37,6 +33,7 @@
         font-size: 50px;
         box-shadow: 0 0 15px #000;
     }
+
     button {
         padding: 15px 30px;
         font-size: 20px;
@@ -52,6 +49,7 @@
         transform: translateY(1px);
         box-shadow: 0 0 4px #e63946aa;
     }
+
     #message {
         margin-top: 20px;
         font-size: 24px;
@@ -60,13 +58,16 @@
 </style>
 </head>
 <body>
-<h1>Simple Poker Machine</h1>
-<p>Press SPIN to try your luck. Match all 3 symbols to win. Jackpot triggers on triple ⭐.</p>
+
+<h1>5‑Reel Poker Machine</h1>
+<p>Match all 5 symbols to win. ⭐⭐⭐⭐⭐ triggers the JACKPOT.</p>
 
 <div class="slot-container">
     <div class="slot" id="slot1">?</div>
     <div class="slot" id="slot2">?</div>
     <div class="slot" id="slot3">?</div>
+    <div class="slot" id="slot4">?</div>
+    <div class="slot" id="slot5">?</div>
 </div>
 
 <button onclick="spin()">SPIN</button>
@@ -76,22 +77,26 @@
     const symbols = ["🍒", "🍋", "🔔", "💎", "⭐"]; // ⭐ = jackpot symbol
 
     function spin() {
-        const s1 = symbols[Math.floor(Math.random() * symbols.length)];
-        const s2 = symbols[Math.floor(Math.random() * symbols.length)];
-        const s3 = symbols[Math.floor(Math.random() * symbols.length)];
+        const results = [];
 
-        document.getElementById("slot1").textContent = s1;
-        document.getElementById("slot2").textContent = s2;
-        document.getElementById("slot3").textContent = s3;
+        // Generate 5 random symbols
+        for (let i = 1; i <= 5; i++) {
+            const symbol = symbols[Math.floor(Math.random() * symbols.length)];
+            results.push(symbol);
+            document.getElementById("slot" + i).textContent = symbol;
+        }
 
         const msg = document.getElementById("message");
 
-        if (s1 === s2 && s2 === s3) {
-            if (s1 === "⭐") {
-                msg.textContent = "JACKPOT! ⭐⭐⭐";
+        // Check if all 5 match
+        const allMatch = results.every(s => s === results[0]);
+
+        if (allMatch) {
+            if (results[0] === "⭐") {
+                msg.textContent = "JACKPOT! ⭐⭐⭐⭐⭐";
                 msg.style.color = "#ffd700";
             } else {
-                msg.textContent = "WIN! Triple " + s1;
+                msg.textContent = "WIN! Five " + results[0] + " in a row!";
                 msg.style.color = "#00ff99";
             }
         } else {
@@ -100,5 +105,6 @@
         }
     }
 </script>
+
 </body>
 </html>
