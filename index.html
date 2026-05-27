@@ -163,7 +163,6 @@
         const msg = document.getElementById("message");
         msg.textContent = "";
 
-        // Flicker animation before showing real results
         await flickerReels();
 
         let results = [];
@@ -194,7 +193,6 @@
             }
         }
 
-        // Display final symbols + above/below
         for (let i = 0; i < 5; i++) {
             const main = results[i];
             const above = symbols[Math.floor(Math.random() * symbols.length)];
@@ -205,7 +203,6 @@
             document.getElementById("g" + (i + 1) + "b").textContent = below;
         }
 
-        // Count left-to-right matches
         let matchCount = 1;
         for (let i = 1; i < results.length; i++) {
             if (results[i] === results[0]) matchCount++;
@@ -226,6 +223,38 @@
         }
     }
 </script>
+
+<!-- ⭐⭐⭐ PAYOUT TABLE ⭐⭐⭐ -->
+
+<div style="margin-top:40px; color:#ccc; font-size:18px;">
+    <h2 style="color:white; margin-bottom:10px;">Payout Table</h2>
+    <table style="margin:0 auto; border-collapse:collapse; font-size:18px;">
+        <tr>
+            <th style="border:1px solid #555; padding:8px;">Match</th>
+            <th style="border:1px solid #555; padding:8px;">Prize</th>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">2 Matching Symbols</td>
+            <td style="border:1px solid #555; padding:8px;">Small Win</td>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">3 Matching Symbols</td>
+            <td style="border:1px solid #555; padding:8px;">Medium Win</td>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">4 Matching Symbols</td>
+            <td style="border:1px solid #555; padding:8px;">Big Win</td>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">5 Matching Symbols</td>
+            <td style="border:1px solid #555; padding:8px;">Huge Win</td>
+        </tr>
+        <tr>
+            <td style="border:1px solid #555; padding:8px;">⭐⭐⭐⭐⭐</td>
+            <td style="border:1px solid #555; padding:8px; color:#ffd700;">JACKPOT</td>
+        </tr>
+    </table>
+</div>
 
 </body>
 </html>
