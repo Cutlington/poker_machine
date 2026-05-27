@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Sara's Poker Machine</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Poker Machine</title>
 <style>
     body {
         background: #111;
@@ -11,7 +12,6 @@
         text-align: center;
         padding: 40px;
     }
-
     h1 { margin-bottom: 10px; }
     p { margin-top: 0; color: #ccc; }
 
@@ -21,7 +21,6 @@
         gap: 20px;
         margin: 30px 0;
     }
-
     .slot {
         width: 120px;
         height: 120px;
@@ -32,6 +31,7 @@
         align-items: center;
         justify-content: center;
         font-size: 50px;
+        box-shadow: 0 0 15px #000;
     }
 
     button {
@@ -45,7 +45,6 @@
         box-shadow: 0 0 10px #e63946aa;
         transition: transform 0.05s ease, box-shadow 0.05s ease;
     }
-
     button:active {
         transform: translateY(1px);
         box-shadow: 0 0 4px #e63946aa;
@@ -60,8 +59,8 @@
 </head>
 <body>
 
-<h1>Sara's Poker Machine</h1>
-<p>Match all 5 symbols to win. ⭐⭐⭐⭐⭐ = JACKPOT</p>
+<h1>5‑Reel Poker Machine</h1>
+<p>Match all 5 symbols to win. ⭐⭐⭐⭐⭐ triggers the JACKPOT.</p>
 
 <div class="slot-container">
     <div class="slot" id="slot1">?</div>
@@ -75,11 +74,12 @@
 <div id="message"></div>
 
 <script>
-    const symbols = ["🍒", "🍋", "🔔", "💎", "⭐"];
+    const symbols = ["🍒", "🍋", "🔔", "💎", "⭐"]; // ⭐ = jackpot symbol
 
     function spin() {
         const results = [];
 
+        // Generate 5 random symbols
         for (let i = 1; i <= 5; i++) {
             const symbol = symbols[Math.floor(Math.random() * symbols.length)];
             results.push(symbol);
@@ -87,6 +87,8 @@
         }
 
         const msg = document.getElementById("message");
+
+        // Check if all 5 match
         const allMatch = results.every(s => s === results[0]);
 
         if (allMatch) {
@@ -94,7 +96,7 @@
                 msg.textContent = "JACKPOT! ⭐⭐⭐⭐⭐";
                 msg.style.color = "#ffd700";
             } else {
-                msg.textContent = "WIN! Five " + results[0] + "!";
+                msg.textContent = "WIN! Five " + results[0] + " in a row!";
                 msg.style.color = "#00ff99";
             }
         } else {
