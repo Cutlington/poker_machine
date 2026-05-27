@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Saras Poker Machine</title>
+<title>Sara's Poker Machine</title>
 <style>
     body {
         background: #111;
@@ -11,6 +11,9 @@
         text-align: center;
         padding: 40px;
     }
+
+    h1 { margin-bottom: 10px; }
+    p { margin-top: 0; color: #ccc; }
 
     .slot-container {
         display: flex;
@@ -30,12 +33,18 @@
         justify-content: center;
         font-size: 50px;
     }
-</style>
-</head>
-<body>
 
-<h1>5‑Reel Poker Machine</h1>
-<p>Match all 5 symbols to win. ⭐⭐⭐⭐⭐ = JACKPOT</p>
+    button {
+        padding: 15px 30px;
+        font-size: 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        background: #e63946;
+        color: white;
+        box-shadow: 0 0 10px #e63946aa;
+        transition: transform 0.05s ease, box-shadow 0.05s ease;
+    }
 
-<div class="slot-container">
-    <div class="slot" id="slot1">
+    button:active {
+        transform
